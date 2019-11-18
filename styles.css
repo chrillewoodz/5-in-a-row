@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css?family=Ubuntu:400,700&display=swap');
+
+/* For demo purposes only, don't do this in a real world application :) */
+* {
+  font-family: Ubuntu;
+  font-weight: bold;
+}
+
+#board {
+  width: 600px;
+  height: 600px;
+  margin: 0 auto;
+  border-top: 1px solid brown;
+  border-left: 1px solid brown;
+}
+
+.panel {
+  float: left;
+}
+
+.tile {
+  float: left;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  border-right: 1px solid brown;
+  border-bottom: 1px solid brown;
+  box-sizing: border-box;
+  background-color: burlywood;
+  text-align: center;
+}
+
+.marker {
+  line-height: inherit;
+  font-size: 20px;
+}
+
+.marker.black {
+  color: black;
+}
+
+.marker.white {
+  color: white;
+}
+
+.alert-box {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  border: 1px solid #ddd;
+  opacity: 0;
+  visibility: hidden;
+  background-color: white;
+  text-align: center;
+  transition: opacity 150ms ease;
+}
+
+.alert-box.active {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 150ms ease;
+}
+
+.btn {
+  padding: 10px 20px;
+  background-color: aliceblue;
+}
