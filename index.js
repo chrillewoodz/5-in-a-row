@@ -50,12 +50,13 @@ class View {
         return;
       }
 
-      const i = document.createElement('i');
-            i.classList.add('marker', game.state.currentPlayer.color, 'fas', 'fa-circle');
+      const currentPlayer = game.state.currentPlayer;
+      const marker = document.createElement('img');
+            marker.src = `./assets/5-in-a-row-marker-${currentPlayer.color}.svg`;
       
-      tile.appendChild(i);
+      tile.appendChild(marker);
 
-      game.state.currentPlayer.addTile(tile.id);
+      currentPlayer.addTile(tile.id);
       game.engine.endTurn();
     });
   }
