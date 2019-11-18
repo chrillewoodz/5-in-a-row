@@ -22,6 +22,7 @@
 }
 
 .tile {
+  position: relative;
   float: left;
   width: 30px;
   height: 30px;
@@ -37,6 +38,7 @@
   width: 20px;
   height: 20px;
   vertical-align: sub;
+  animation: show 0.5s ease;
 }
 
 .alert-box {
@@ -73,3 +75,18 @@ h1, h2, h3, h4, h5, h6 {
 .title {
   margin-bottom: 5px;
 }
+
+@keyframes show {
+  0% {
+    opacity: 0;
+    visibility: hidden;
+    transform: skewX(-20deg);
+  }
+  30% {
+    opacity: 1;
+    visibility: visible;
+  }
+  100% {
+    transform: skewX(0deg);
+  }
+} 
