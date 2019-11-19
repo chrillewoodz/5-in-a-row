@@ -201,7 +201,8 @@ class Player {
 
   addTile(info) {
     this.populatedTiles.push(info);
-    this.populatedTiles.sort((a, b) => a.column - b.column); // Asc order
+    this.populatedTiles.sort((a, b) => (a.row - b.row) || (a.column - b.column)); // Asc order
+    console.log(this.populatedTiles);
   }
 
   reset() {
