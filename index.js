@@ -4,11 +4,8 @@ class View {
   boardView = document.querySelector('#board');
   currentPlayerView = document.querySelector('#current-player');
   newGameBtn = document.querySelector('#new-game');
-  tiles;
 
-  constructor(tiles) {
-
-    this.tiles = tiles;
+  constructor() {
 
     this.newGameBtn.addEventListener('click', () => {
       game.resetGame();
@@ -20,15 +17,19 @@ class View {
 
   createBoard() {
 
-    for (let i = 0; i < this.tiles; i++) {
+    // Create a 20x20 grid
+    for (let i = 1; i < 21; i++) {
+      for (let j = 1; j < 21; j++) {
 
-      const tile = document.createElement('div');
-            tile.classList.add('tile');
-            tile.id = i;
+        const tile = document.createElement('div');
+              tile.classList.add('tile');
+              tile.dataset.row = i;
+              tile.dataset.column = j;
 
-      this.boardView.appendChild(tile);
-      this.tilesView.push(tile);
-      this.prepareTile(tile);
+        this.boardView.appendChild(tile);
+        this.tilesView.push(tile);
+        this.prepareTile(tile);
+      }
     }
   }
 
@@ -56,7 +57,11 @@ class View {
       
       tile.appendChild(marker);
 
-      currentPlayer.addTile(tile.id);
+      currentPlayer.addTile({
+        row: parseInt(tile.dataset.row),
+        column: parseInt(tile.dataset.column)
+      });
+
       game.engine.endTurn();
     });
   }
@@ -130,23 +135,47 @@ class Engine {
 
     const hasWinner = populatedTiles.some((tile) => {
 
+      const horizontalCondition = check((i) => {
+        return !!populatedTiles.find((o) => {
+          return (o.column === tile.column + i) && o.row === tile.row;
+        });
+      });
+
       // Horizontally
-      if (check((i) => populatedTiles.includes(tile + i))) {
+      if (horizontalCondition) {
         return true;
       }
+
+      const diagonalRightCondition = check((i) => {
+        return !!populatedTiles.find((o) => {
+          return (o.column === tile.column + i) && (o.row === tile.row + i);
+        });
+      });
 
       // Diagonally (right)
-      if (check((i) => populatedTiles.includes(tile + (i * 21)))) {
+      if (diagonalRightCondition) {
         return true;
       }
+
+      const diagonalLeftCondition = check((i) => {
+        return !!populatedTiles.find((o) => {
+          return (o.column === tile.column - i) && (o.row === tile.row + i);
+        });
+      });
 
       // Diagonally (left)
-      if (check((i) => populatedTiles.includes(tile + (i * 19)))) {
+      if (diagonalLeftCondition) {
         return true;
       }
 
+      const verticalCondition = check((i) => {
+        return !!populatedTiles.find((o) => {
+          return (o.column === tile.column) && (o.row === tile.row + i);
+        });
+      });
+
       // Vertically
-      if (check((i) => populatedTiles.includes(tile + (i * 20)))) {
+      if (verticalCondition) {
         return true;
       }
     });
@@ -170,9 +199,9 @@ class Player {
     this.color = color;
   }
 
-  addTile(tileId) {
-    this.populatedTiles.push(parseInt(tileId));
-    this.populatedTiles.sort((a, b) => a - b);
+  addTile(info) {
+    this.populatedTiles.push(info);
+    this.populatedTiles.sort((a, b) => a.column - b.column); // Asc order
   }
 
   reset() {
@@ -200,7 +229,7 @@ class Game {
   constructor() {
     this.engine = new Engine();
     this.state = new State();
-    this.view = new View(400);
+    this.view = new View();
     this.players = {
       one: new Player(1, 'Snakeboi229', 'black'),
       two: new Player(2, '360noscopingyourmom', 'white')
